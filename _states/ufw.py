@@ -22,7 +22,7 @@ def _changed(name, msg, **changes):
 def _resolve(host):
     # let's just see if it starts with a number or a colon, for simplicity
     if re.match(r'^[0-9:]', host):
-        return
+        return host
 
     return socket.gethostbyname(host)
 
