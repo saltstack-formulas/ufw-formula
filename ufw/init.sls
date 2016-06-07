@@ -79,7 +79,7 @@ ufw-interface-{{interface}}:
   {%- endfor %}
 
   # Open
-  {%- for from_addr in ufw.get('open', []).items() %}
+  {%- for from_addr in ufw.get('open', {}).get('from_addr', []) %}
 
 ufw-open-{{from_addr}}:
   ufw.allowed:
