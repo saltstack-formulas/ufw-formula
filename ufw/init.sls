@@ -7,10 +7,26 @@ ufw:
     - installed
   service.running:
     - enable: True
-  ufw:
-    - enabled
+
+  {%- if ufw.get('defaults', {}).get('incoming', False) %}
+
+ufw-default-incoming:
+  ufw.default_incoming:
+    - default: {{ufw.get('defaults', {}).get('incoming', 'allow')}}
     - require:
       - pkg: ufw
+
+  {% endif %}
+
+  {%- if ufw.get('defaults', {}).get('outgoing', False) %}
+
+ufw-default-outgoing:
+  ufw.default_outgoing:
+    - default: {{ufw.get('defaults', {}).get('outgoing', 'deny')}}
+    - require:
+      - pkg: ufw
+
+  {% endif %}
 
   {%- for service_name, service_details in ufw.get('services', {}).items() %}
 
@@ -61,6 +77,22 @@ ufw-interface-{{interface}}:
       - pkg: ufw
 
   {%- endfor %}
+
+  # Open
+  {%- for from_addr in ufw.get('open', []).items() %}
+
+ufw-open-{{from_addr}}:
+  ufw.allowed:
+    - from_addr: {{from_addr}}
+    - require:
+      - pkg: ufw
+
+  {%- endfor %}
+
+enable-ufw:
+  ufw.enabled:
+    - require:
+      - pkg: ufw
 
 {% else %}
   #ufw:

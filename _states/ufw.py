@@ -78,6 +78,48 @@ def enabled(name, **kwargs):
     return _changed(name, "UFW is enabled", enabled=True)
 
 
+def default_incoming(name, default):
+    rule = "default {0} incoming".format(default)
+    if __opts__['test']:
+        return _test(name, "{0}: {1}".format(name, rule))
+
+    current = __salt__['ufw.get_default_incoming']()
+
+    if default != current:
+        try:
+            out = __salt__['ufw.add_rule'](rule)
+        except (CommandExecutionError, CommandNotFoundError) as e:
+            return _error(name, e.message)
+
+        for line in out.split('\n'):
+            if line.startswith("Default incoming policy changed to"):
+                return _changed(name, "{0} set to {1}".format(name, default), rule=rule)
+            return _error(name, line)
+
+    return _unchanged(name, "{0} was already set to {1}".format(name, default))
+
+
+def default_outgoing(name, default):
+    rule = "default {0} outgoing".format(default)
+    if __opts__['test']:
+        return _test(name, "{0}: {1}".format(name, rule))
+
+    current = __salt__['ufw.get_default_outgoing']()
+
+    if default != current:
+        try:
+            out = __salt__['ufw.add_rule'](rule)
+        except (CommandExecutionError, CommandNotFoundError) as e:
+            return _error(name, e.message)
+
+        for line in out.split('\n'):
+            if line.startswith("Default outgoing policy changed to"):
+                return _changed(name, "{0} set to {1}".format(name, default), rule=rule)
+            return _error(name, line)
+
+    return _unchanged(name, "{0} was already set to {1}".format(name, default))
+
+
 def allowed(name, app=None, interface=None, protocol=None,
             from_addr=None, from_port=None, to_addr=None, to_port=None):
 
