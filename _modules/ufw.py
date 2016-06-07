@@ -1,6 +1,9 @@
 """
 Execution module for UFW.
 """
+
+import re
+
 def is_enabled():
     cmd = 'ufw status | grep "Status: active"'
     out = __salt__['cmd.run'](cmd, python_shell=True)

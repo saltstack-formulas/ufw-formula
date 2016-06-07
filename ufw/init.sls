@@ -38,7 +38,9 @@ ufw-default-outgoing:
 
 ufw-svc-{{service_name}}-{{from_addr}}:
   ufw.allowed:
+    {%- if protocol != None %}
     - protocol: {{protocol}}
+    {%- endif %}
     {%- if from_addr != None %}
     - from_addr: {{from_addr}}
     {%- endif %}
