@@ -1,0 +1,72 @@
+{% set ufw_cfg = pillar.get('ufw', {}) -%}
+{% set sysctl_cfg = ufw_cfg.get('sysctl', {}) -%}
+{% set forwarding = sysctl_cfg.get('forwarding', 0) -%}
+{% set rp_filter = sysctl_cfg.get('rp_filter', 1) -%}
+{% set accept_source_route = sysctl_cfg.get('accept_source_route', 0) -%}
+{% set accept_redirects = sysctl_cfg.get('accept_redirects', 0) -%}
+{% set icmp_echo_ignore_broadcasts = sysctl_cfg.get('icmp_echo_ignore_broadcasts', 1) -%}
+{% set icmp_ignore_bogus_error_responses = sysctl_cfg.get('icmp_ignore_bogus_error_responses', 1) -%}
+{% set icmp_echo_ignore_all = sysctl_cfg.get('icmp_echo_ignore_all', 0) -%}
+{% set log_martians = sysctl_cfg.get('log_martians', 0) -%}
+{% set tcp_syncookies = sysctl_cfg.get('tcp_syncookies', 0) -%}
+{% set tcp_sack = sysctl_cfg.get('tcp_sack', 1) -%}
+{% set ipv6_autoconf = sysctl_cfg.get('ipv6_autoconf', 1) -%}
+{% set use_tempaddr = sysctl_cfg.get('use_tempaddr', 1) -%}
+# File managed by Salt. Do not edit manually.
+#
+# Configuration file for setting network variables. Please note these settings
+# override /etc/sysctl.conf. If you prefer to use /etc/sysctl.conf, please
+# adjust IPT_SYSCTL in /etc/default/ufw.
+#
+
+# Uncomment this to allow this host to route packets between interfaces
+net/ipv4/ip_forward={{ forwarding }}
+net/ipv6/conf/default/forwarding={{ forwarding }}
+net/ipv6/conf/all/forwarding={{ forwarding }}
+
+# Turn on Source Address Verification in all interfaces to prevent some
+# spoofing attacks
+net/ipv4/conf/default/rp_filter={{ rp_filter }}
+net/ipv4/conf/all/rp_filter={{ rp_filter }}
+
+# Do not accept IP source route packets (we are not a router)
+net/ipv4/conf/default/accept_source_route={{ accept_source_route }}
+net/ipv4/conf/all/accept_source_route={{ accept_source_route }}
+net/ipv6/conf/default/accept_source_route={{ accept_source_route }}
+net/ipv6/conf/all/accept_source_route={{ accept_source_route }}
+
+# Disable ICMP redirects. ICMP redirects are rarely used but can be used in
+# MITM (man-in-the-middle) attacks. Disabling ICMP may disrupt legitimate
+# traffic to those sites.
+net/ipv4/conf/default/accept_redirects={{ accept_redirects }}
+net/ipv4/conf/all/accept_redirects={{ accept_redirects }}
+net/ipv6/conf/default/accept_redirects={{ accept_redirects }}
+net/ipv6/conf/all/accept_redirects={{ accept_redirects }}
+
+# Ignore bogus ICMP errors
+net/ipv4/icmp_echo_ignore_broadcasts={{ icmp_echo_ignore_broadcasts }}
+net/ipv4/icmp_ignore_bogus_error_responses={{ icmp_ignore_bogus_error_responses }}
+net/ipv4/icmp_echo_ignore_all={{ icmp_echo_ignore_all }}
+
+# Don't log Martian Packets (impossible packets)
+net/ipv4/conf/default/log_martians={{ log_martians }}
+net/ipv4/conf/all/log_martians={{ log_martians }}
+
+# Change to '1' to enable TCP/IP SYN cookies This disables TCP Window Scaling
+# (http://lkml.org/lkml/2008/2/5/167)
+net/ipv4/tcp_syncookies={{ tcp_syncookies }}
+
+#net/ipv4/tcp_fin_timeout=30
+#net/ipv4/tcp_keepalive_intvl=1800
+
+# normally allowing tcp_sack is ok, but if going through OpenBSD 3.8 RELEASE or
+# earlier pf firewall, should set this to 0
+net/ipv4/tcp_sack={{ tcp_sack }}
+
+# Uncomment this to turn off ipv6 autoconfiguration
+net/ipv6/conf/default/autoconf={{ ipv6_autoconf }}
+net/ipv6/conf/all/autoconf={{ ipv6_autoconf }}
+
+# Uncomment this to enable ipv6 privacy addressing
+net/ipv6/conf/default/use_tempaddr={{ use_tempaddr }}
+net/ipv6/conf/all/use_tempaddr={{ use_tempaddr }}

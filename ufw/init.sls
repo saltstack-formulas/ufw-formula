@@ -1,12 +1,33 @@
 # UFW management module
 {%- set ufw = pillar.get('ufw', {}) %}
 {%- if ufw.get('enabled', False) %}
+{% set default_template = ufw.get('default_template', 'salt://ufw/templates/default.jinja') -%}
+{% set sysctl_template = ufw.get('sysctl_template', 'salt://ufw/templates/sysctl.jinja') -%}
 
 ufw:
-  pkg:
-    - installed
+  pkg.installed:
+    - name: ufw
   service.running:
     - enable: True
+    - watch:
+      - file: /etc/default/ufw
+      - file: /etc/ufw/sysctl.conf
+
+/etc/default/ufw:
+  file.managed:
+    - template: jinja
+    - user: root
+    - group: root
+    - mode: 644
+    - source: {{ default_template }}
+
+/etc/ufw/sysctl.conf:
+  file.managed:
+    - template: jinja
+    - user: root
+    - group: root
+    - mode: 644
+    - source: {{ sysctl_template }}
 
   {%- if ufw.get('defaults', {}).get('incoming', False) %}
 
@@ -59,14 +80,28 @@ ufw-svc-{{service_name}}-{{from_addr}}:
   {%- endfor %}
 
   # Applications
-  {%- for app_name in ufw.get('applications', []) %}
+  {%- for app_name, app_details in ufw.get('applications', {}).items() %}
+    
+    {%- for from_addr in app_details.get('from_addr', [None]) %}
+      {%- set to_addr = app_details.get('to_addr', None) %}
 
+{%- if from_addr != None%}
+ufw-app-{{app_name}}-{{from_addr}}:
+{%- else %}
 ufw-app-{{app_name}}:
+{%- endif %}
   ufw.allowed:
-    - app: {{app_name}}
+    - app: '"{{app_name}}"'
+    {%- if from_addr != None %}
+    - from_addr: {{from_addr}}
+    {%- endif %}
+    {%- if to_addr != None %}
+    - to_addr: {{to_addr}}
+    {%- endif %}
     - require:
       - pkg: ufw
 
+    {%- endfor %}
   {%- endfor %}
   
   # Interfaces
@@ -95,6 +130,12 @@ enable-ufw:
   ufw.enabled:
     - require:
       - pkg: ufw
+
+disable-logging:
+  cmd.run:
+    - name: ufw logging off
+    - unless: "grep 'LOGLEVEL=off' /etc/ufw/ufw.conf"
+
 
 {% else %}
   #ufw:
