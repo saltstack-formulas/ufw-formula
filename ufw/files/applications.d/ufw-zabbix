@@ -1,0 +1,14 @@
+[Zabbix server]
+title=Zabbix server
+description=Zabbix server listens on port 10051
+ports=10051/tcp
+
+[Zabbix proxy]
+title=Zabbix proxy
+description=Zabbix proxy server listens on port 10051
+ports=10051/tcp
+
+[Zabbix agent]
+title=Zabbix agent
+description=Zabbix agent listens on port 10050
+ports=10050/tcp

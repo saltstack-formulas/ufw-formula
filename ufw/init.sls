@@ -29,26 +29,15 @@ ufw:
     - mode: 644
     - source: {{ sysctl_template }}
 
-  {%- if ufw.get('defaults', {}).get('incoming', False) %}
+/etc/ufw/applications.d:
+  file.recurse:
+    - user: root
+    - group: root
+    - file_mode: 644
+    - clean: False
+    - source: salt://ufw/files/applications.d
 
-ufw-default-incoming:
-  ufw.default_incoming:
-    - default: {{ufw.get('defaults', {}).get('incoming', 'allow')}}
-    - require:
-      - pkg: ufw
-
-  {% endif %}
-
-  {%- if ufw.get('defaults', {}).get('outgoing', False) %}
-
-ufw-default-outgoing:
-  ufw.default_outgoing:
-    - default: {{ufw.get('defaults', {}).get('outgoing', 'deny')}}
-    - require:
-      - pkg: ufw
-
-  {% endif %}
-
+  # services
   {%- for service_name, service_details in ufw.get('services', {}).items() %}
 
     {%- for from_addr in service_details.get('from_addr', [None]) %}

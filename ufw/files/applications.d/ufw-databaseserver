@@ -1,0 +1,18 @@
+[MariaDB]
+title=MariaDB database server
+description=MariaDB is a MySQL-compatible database server.
+ports=3306/tcp
+
+[MySQL]
+title=MySQL database server
+description=MySQL database server.
+ports=3306/tcp
+
+[Postgresql]
+title=Postgresql database server
+description=Postgresql database server.
+ports=5432/tcp
+
+
+
+

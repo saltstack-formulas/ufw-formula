@@ -1,0 +1,4 @@
+[SSH223]
+title=Secure shell server, port 223
+description=OpenSSH webscale default port 223
+ports=223/tcp

@@ -29,5 +29,5 @@ def set_enabled(enabled):
 def add_rule(rule):
     cmd = "ufw " + rule
     out = __salt__['cmd.run'](cmd)
-    # __salt__['cmd.run']("ufw reload") # why reload after adding a rule? :/
+    __salt__['cmd.run']("ufw reload")
     return out

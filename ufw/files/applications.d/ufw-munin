@@ -1,0 +1,4 @@
+[Munin node]
+title=Munin node
+description=Munin is a simple monitoring system with nodes beeing queried by a central munin server.
+ports=4949/tcp
