@@ -89,6 +89,8 @@ ufw-app-{{app_name}}:
     {%- endif %}
     - require:
       - pkg: ufw
+    - listen_in:
+      - cmd: reload-ufw
 
     {%- endfor %}
   {%- endfor %}
@@ -101,6 +103,8 @@ ufw-interface-{{interface}}:
     - interface: {{interface}}
     - require:
       - pkg: ufw
+    - listen_in:
+      - cmd: reload-ufw
 
   {%- endfor %}
 
@@ -112,6 +116,8 @@ ufw-open-{{from_addr}}:
     - from_addr: {{from_addr}}
     - require:
       - pkg: ufw
+    - listen_in:
+      - cmd: reload-ufw
 
   {%- endfor %}
 
@@ -119,6 +125,10 @@ enable-ufw:
   ufw.enabled:
     - require:
       - pkg: ufw
+
+reload-ufw:
+  cmd.wait:
+    - name: ufw reload
 
 disable-logging:
   cmd.run:
