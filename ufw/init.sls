@@ -63,6 +63,8 @@ ufw-svc-{{service_name}}-{{from_addr}}:
     - to_port: "{{service_name}}"
     - require:
       - pkg: ufw
+    - listen_in:
+      - cmd: reload-ufw
 
     {%- endfor %}
 
