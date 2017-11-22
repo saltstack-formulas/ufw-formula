@@ -1,12 +1,13 @@
 # UFW management module
 {%- set ufw = pillar.get('ufw', {}) %}
 {%- if ufw.get('enabled', False) %}
+{% from "ufw/map.jinja" import ufwmap with context %}
 {% set default_template = ufw.get('default_template', 'salt://ufw/templates/default.jinja') -%}
 {% set sysctl_template = ufw.get('sysctl_template', 'salt://ufw/templates/sysctl.jinja') -%}
 
 ufw:
   pkg.installed:
-    - name: ufw
+    - name: {{ ufwmap.pkg }}
   service.running:
     - enable: True
     - watch:
