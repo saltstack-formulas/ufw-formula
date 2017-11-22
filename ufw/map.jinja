@@ -1,0 +1,17 @@
+{% import_yaml 'ufw/defaults.yaml' as default_settings %}
+
+{% set os_family_map = salt['grains.filter_by']({
+        'Gentoo': {
+            'pkg': 'net-firewall/ufw',
+        },
+    },
+    grain="os_family",
+    merge=salt['pillar.get']('ufw:lookup')) or {}
+%}
+
+{% set ufwmap = salt['grains.filter_by'](
+        default_settings,
+        merge=os_family_map,
+        base='ufwmap',
+    )
+%}
