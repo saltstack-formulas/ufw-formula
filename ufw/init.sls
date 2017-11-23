@@ -46,6 +46,7 @@ ufw:
       {%- set protocol  = service_details.get('protocol', None) %}
       {%- set from_port = service_details.get('from_port', None) %}
       {%- set to_addr   = service_details.get('to_addr', None) %}
+      {%- set comment   = service_details.get('comment', None) %}
 
 ufw-svc-{{service_name}}-{{from_addr}}:
   ufw.allowed:
@@ -60,6 +61,9 @@ ufw-svc-{{service_name}}-{{from_addr}}:
     {%- endif %}
     {%- if to_addr != None %}
     - to_addr: {{to_addr}}
+    {%- endif %}
+    {%- if comment != None %}
+    - comment: '"{{comment}}"'
     {%- endif %}
     - to_port: "{{service_name}}"
     - require:
@@ -76,6 +80,7 @@ ufw-svc-{{service_name}}-{{from_addr}}:
     
     {%- for from_addr in app_details.get('from_addr', [None]) %}
       {%- set to_addr = app_details.get('to_addr', None) %}
+      {%- set comment = app_details.get('comment', None) %}
 
 {%- if from_addr != None%}
 ufw-app-{{app_name}}-{{from_addr}}:
@@ -90,6 +95,9 @@ ufw-app-{{app_name}}:
     {%- if to_addr != None %}
     - to_addr: {{to_addr}}
     {%- endif %}
+    {%- if comment != None %}
+    - comment: '"{{comment}}"'
+    {%- endif %}
     - require:
       - pkg: ufw
     - listen_in:
@@ -99,11 +107,15 @@ ufw-app-{{app_name}}:
   {%- endfor %}
   
   # Interfaces
-  {%- for interface in ufw.get('interfaces', []) %}
+  {%- for interface_name, interface_details in ufw.get('interfaces', {}).items() %}
+    {%- set comment = interface_details.get('comment', None) %}
 
-ufw-interface-{{interface}}:
+ufw-interface-{{interface_name}}:
   ufw.allowed:
-    - interface: {{interface}}
+    - interface: {{interface_name}}
+    {%- if comment != None %}
+    - comment: '"{{comment}}"'
+    {%- endif %}
     - require:
       - pkg: ufw
     - listen_in:
@@ -112,11 +124,15 @@ ufw-interface-{{interface}}:
   {%- endfor %}
 
   # Open
-  {%- for from_addr in ufw.get('open', {}).get('from_addr', []) %}
+  {%- for open_addr, open_details in ufw.get('open', {}).items() %}
+    {%- set comment = open_details.get('comment', None) %}
 
-ufw-open-{{from_addr}}:
+ufw-open-{{open_addr}}:
   ufw.allowed:
-    - from_addr: {{from_addr}}
+    - from_addr: {{open_addr}}
+    {%- if comment != None %}
+    - comment: '"{{comment}}"'
+    {%- endif %}
     - require:
       - pkg: ufw
     - listen_in:

@@ -37,6 +37,7 @@ ufw:
       from_addr:
         - 10.0.2.15
         - 10.0.2.16
+      comment: Upstream loadbalancers
 
     # Allow 443/tcp (https) traffic from network 10.0.0.0/8 to an specific local ip.
     https:
@@ -44,28 +45,35 @@ ufw:
       from_addr:
         - 10.0.0.0/8
       to_addr: 10.0.2.1
+      comment: Intraweb portal
 
     # Allow from a service port.
     smtp:
       protocol: tcp
+      comment: Mail relay
 
     # Allow from an specific port, by number.
     139:
       protocol: tcp
+      comment: Netbios
 
     # Allow from a range of ports, udp.
     "10000:20000":
       protocol: udp
+      comment: We need ports, lots of ports
 
     # Allow from two specific ports, udp.
     "30000,40000":
       protocol: udp
+      comment: Game server and admin
 
   # Allow an application defined at /etc/ufw/applications.d/
   applications:
     OpenSSH:
       enabled: True
+      comment: We are using fail2ban anyway
 
   # Allow all traffic in on the specified interface
   interfaces:
-    - eth1
+    eth1:
+      comment: Honey pot

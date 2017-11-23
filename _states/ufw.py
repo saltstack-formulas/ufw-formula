@@ -27,7 +27,7 @@ def _resolve(host):
     return socket.gethostbyname(host)
 
 
-def _as_rule(method, app, interface, protocol, from_addr, from_port, to_addr, to_port):
+def _as_rule(method, app, interface, protocol, from_addr, from_port, to_addr, to_port, comment):
     cmd = [method]
     if app is not None:
       cmd.append("from")
@@ -72,6 +72,10 @@ def _as_rule(method, app, interface, protocol, from_addr, from_port, to_addr, to
         if to_port is not None:
             cmd.append("port")
             cmd.append(to_port)
+
+    if comment is not None:
+        cmd.append("comment")
+        cmd.append(comment)
     real_cmd = ' '.join(cmd)
     return real_cmd
 
@@ -134,10 +138,10 @@ def default_outgoing(name, default):
 
 
 def allowed(name, app=None, interface=None, protocol=None,
-            from_addr=None, from_port=None, to_addr=None, to_port=None):
+            from_addr=None, from_port=None, to_addr=None, to_port=None, comment=None):
 
     rule = _as_rule("allow", app=app, interface=interface, protocol=protocol,
-                   from_addr=from_addr, from_port=from_port, to_addr=to_addr, to_port=to_port)
+                   from_addr=from_addr, from_port=from_port, to_addr=to_addr, to_port=to_port, comment=comment)
 
     if __opts__['test']:
         return _test(name, "{0}: {1}".format(name, rule))
