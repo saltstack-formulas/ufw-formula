@@ -26,6 +26,10 @@ def set_enabled(enabled):
     __salt__['cmd.run'](cmd)
 
 def add_rule(rule):
-    cmd = "ufw " + rule
+    if __opts__['test']:
+        cmd = "ufw --dry-run " + rule
+    else:
+        cmd = "ufw " + rule
     out = __salt__['cmd.run'](cmd, python_shell=True)
     return out
+

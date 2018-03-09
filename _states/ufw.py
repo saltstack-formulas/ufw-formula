@@ -143,9 +143,6 @@ def allowed(name, app=None, interface=None, protocol=None,
     rule = _as_rule("allow", app=app, interface=interface, protocol=protocol,
                    from_addr=from_addr, from_port=from_port, to_addr=to_addr, to_port=to_port, comment=comment)
 
-    if __opts__['test']:
-        return _test(name, "{0}: {1}".format(name, rule))
-
     try:
         out = __salt__['ufw.add_rule'](rule)
     except (CommandExecutionError, CommandNotFoundError) as e:
@@ -154,9 +151,16 @@ def allowed(name, app=None, interface=None, protocol=None,
     changes = False
     for line in out.split('\n'):
         if line.startswith("Skipping"):
-            continue
+            if __opts__['test']:
+                return _unchanged(name, "{0} was already allowed".format(name))
+                break
+            else:
+                continue
         if line.startswith("Rule added") or line.startswith("Rules updated"):
             changes = True
+            break
+        if __opts__['test']:
+            return _test(name, "{0} would have been allowed".format(name))
             break
         return _error(name, line)
 
