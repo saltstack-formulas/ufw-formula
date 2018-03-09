@@ -82,5 +82,5 @@ Authors
 
 Original state and module based on the work from [Yigal Duppen](https://github.com/publysher/infra-example-nginx/tree/develop).
 
-Salt formula developed by Mario del Pozo.
+Salt formula originally developed by Mario del Pozo.
 
