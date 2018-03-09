@@ -4,6 +4,8 @@
 {% from "ufw/map.jinja" import ufwmap with context %}
 {% set default_template = ufw.get('default_template', 'salt://ufw/templates/default.jinja') -%}
 {% set sysctl_template = ufw.get('sysctl_template', 'salt://ufw/templates/sysctl.jinja') -%}
+{% set settings_cfg = ufw.get('settings', {}) -%}
+{% set loglevel = settings_cfg.get('loglevel', 'low') -%}
 
 ufw:
   pkg.installed:
@@ -149,10 +151,10 @@ reload-ufw:
   cmd.wait:
     - name: ufw reload
 
-disable-logging:
+set-logging:
   cmd.run:
-    - name: ufw logging off
-    - unless: "grep 'LOGLEVEL=off' /etc/ufw/ufw.conf"
+    - name: ufw logging {{ loglevel }}
+    - unless: "grep 'LOGLEVEL={{ loglevel }}' /etc/ufw/ufw.conf"
 
 {% else %}
   #ufw:

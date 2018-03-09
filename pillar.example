@@ -3,6 +3,7 @@ ufw:
   enabled: True
 
   settings:
+    loglevel: low
     ipv6: True
     default_input_policy: 'DROP'
     default_output_policy: 'ACCEPT'
