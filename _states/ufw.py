@@ -84,15 +84,15 @@ def enabled(name, **kwargs):
     if __salt__['ufw.is_enabled']():
         return _unchanged(name, "UFW is already enabled")
 
-    if __opts__['test']:
-        return _test(name, "UFW will be enabled")
-
     try:
         __salt__['ufw.set_enabled'](True)
     except (CommandExecutionError, CommandNotFoundError) as e:
         return _error(name, e.message)
 
-    return _changed(name, "UFW is enabled", enabled=True)
+    if __opts__['test']:
+        return _test(name, "UFW would have been enabled")
+    else:
+        return _changed(name, "UFW is enabled", enabled=True)
 
 
 def default_incoming(name, default):

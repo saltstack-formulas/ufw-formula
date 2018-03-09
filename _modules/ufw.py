@@ -22,14 +22,19 @@ def get_default_outgoing():
     return policy
 
 def set_enabled(enabled):
-    cmd = 'ufw --force enable' if enabled else 'ufw disable'
+    if __opts__['test']:
+        cmd = "ufw --dry-run "
+    else:
+        cmd = "ufw "
+    cmd += '--force enable' if enabled else 'disable'
     __salt__['cmd.run'](cmd)
 
 def add_rule(rule):
     if __opts__['test']:
-        cmd = "ufw --dry-run " + rule
+        cmd = "ufw --dry-run "
     else:
-        cmd = "ufw " + rule
+        cmd = "ufw "
+    cmd += rule
     out = __salt__['cmd.run'](cmd, python_shell=True)
     return out
 
