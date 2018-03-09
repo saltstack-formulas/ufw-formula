@@ -154,7 +154,6 @@ disable-logging:
     - name: ufw logging off
     - unless: "grep 'LOGLEVEL=off' /etc/ufw/ufw.conf"
 
-
 {% else %}
   #ufw:
     #ufw:
