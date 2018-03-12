@@ -1,12 +1,10 @@
-ufw-formula
-===========
+# Ufw Salt Formula
 
 This module manages your firewall using ufw with pillar configured rules.
 
 See the full [Salt Formulas installation and usage instructions](http://docs.saltstack.com/topics/development/conventions/formulas.html).
 
-Usage
------
+## Usage
 
 All the configuration for the firewall is done via pillar (pillar.example).
 
@@ -77,8 +75,16 @@ ufw:
     - OpenSSH
 ```
 
-Authors
--------
+## Run tests
+
+This formula is tested with [Kitchen](https://kitchen.ci/) and [Inspec](https://www.inspec.io/) in a Docker container.
+
+To run tests you need to
+
+* install Ruby dependencies : `bundle install`
+* run Kitchen : `kitchen test`
+
+## Authors
 
 Original state and module based on the work from [Yigal Duppen](https://github.com/publysher/infra-example-nginx/tree/develop).
 

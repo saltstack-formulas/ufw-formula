@@ -1,0 +1,10 @@
+name: ufw
+title: Ufw Profile
+maintainer: Alexandre Anriot
+copyright: Alexandre Anriot
+copyright_email: alexandre@atlantilde.com
+license: MIT
+summary: Ufw Compliance Profile
+version: 0.1.0
+supports:
+  - os-family: linux
