@@ -148,24 +148,27 @@ def allowed(name, app=None, interface=None, protocol=None,
     except (CommandExecutionError, CommandNotFoundError) as e:
         return _error(name, e.message)
 
-    changes = False
+    adds = False
+    updates = False
     for line in out.split('\n'):
-        if line.startswith("Skipping"):
-            if __opts__['test']:
-                return _unchanged(name, "{0} was already allowed".format(name))
-                break
-            else:
-                continue
-        if line.startswith("Rule added") or line.startswith("Rules updated"):
-            changes = True
+        if re.match('^Skipping', line):
+            return _unchanged(name, "{0} is already configured".format(name))
+            break
+        if re.match('^Rule(s)? added', line):
+            adds = True
+            break
+        if re.match('^Rule(s)? updated', line):
+            updates = True
             break
         if __opts__['test']:
-            return _test(name, "{0} would have been allowed".format(name))
+            return _test(name, "{0} would have been configured".format(name))
             break
         return _error(name, line)
 
-    if changes:
-        return _changed(name, "{0} allowed".format(name), rule=rule)
+    if adds:
+        return _changed(name, "{0} added".format(name), rule=rule)
+    elif updates:
+        return _changed(name, "{0} updated".format(name), rule=rule)
     else:
-        return _unchanged(name, "{0} was already allowed".format(name))
+        return _unchanged(name, "{0} was already configured".format(name))
 
