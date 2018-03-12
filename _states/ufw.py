@@ -32,22 +32,22 @@ def _as_rule(method, app, interface, protocol, from_addr, from_port, to_addr, to
     if app is not None:
       cmd.append("from")
       if from_addr is not None:
-        cmd.append(from_addr)
+          cmd.append(from_addr)
       else:
-        cmd.append("any")
+          cmd.append("any")
 
       cmd.append("to")
       if to_addr is not None:
-        cmd.append(to_addr)
+          cmd.append(to_addr)
       else:
-        cmd.append("any")
+          cmd.append("any")
 
       cmd.append("app")
       cmd.append(app)
     elif interface is not None:
-    	cmd.append("in")
-    	cmd.append("on")
-    	cmd.append(interface)
+        cmd.append("in")
+        cmd.append("on")
+        cmd.append(interface)
     else:
         if protocol is not None:
             cmd.append("proto")
