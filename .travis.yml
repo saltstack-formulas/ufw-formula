@@ -1,0 +1,17 @@
+language: ruby
+sudo: required
+cache: bundler
+
+rvm:
+  - 2.3.5
+
+services:
+  - docker
+
+script:
+  - bundle exec kitchen test
+
+env:
+  matrix:
+    - DISTRIB=debian:stretch/9
+    - DISTRIB=ubuntu:xenial/16.04
