@@ -1,5 +1,7 @@
 # Ufw Salt Formula
 
+[![Build Status](https://travis-ci.org/aanriot/ufw-formula.svg?branch=master)](https://travis-ci.org/aanriot/ufw-formula)
+
 This module manages your firewall using ufw with pillar configured rules.
 
 See the full [Salt Formulas installation and usage instructions](http://docs.saltstack.com/topics/development/conventions/formulas.html).
