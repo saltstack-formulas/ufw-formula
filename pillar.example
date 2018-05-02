@@ -53,10 +53,35 @@ ufw:
       protocol: tcp
       comment: Mail relay
 
-    # Allow from an specific port, by number.
+    # Allow from a specific port, by number.
     139:
       protocol: tcp
       comment: Netbios
+
+    # Deny from a specific port, by number.
+    140:
+      protocol: tcp
+      deny: True
+
+    # Deny everything from a specific ip address
+    '*':
+      protocol: tcp
+      deny: True
+      from_addr: 10.0.0.1
+
+    # Deny everything from a multiple ip addresses
+    '*':
+      protocol: tcp
+      deny: True
+      from_addr:
+        - 10.0.0.2
+        - 10.0.0.3
+
+    # Limit a specific port, by number.
+    170:
+      limit: True
+      protocol: tcp
+      comment: Print service
 
     # Allow from a range of ports, udp.
     "10000:20000":
@@ -68,11 +93,19 @@ ufw:
       protocol: udp
       comment: Game server and admin
 
-  # Allow an application defined at /etc/ufw/applications.d/
+  # Allow applications defined at /etc/ufw/applications.d/
   applications:
     OpenSSH:
       enabled: True
       comment: We are using fail2ban anyway
+
+    # Limit access to salt master
+    Saltmaster:
+      limit: True
+
+    # Deny access to Postgresql
+    Postgresql:
+      deny: True
 
   # Allow all traffic in on the specified interface
   interfaces:
