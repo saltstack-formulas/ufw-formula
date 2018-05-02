@@ -94,6 +94,9 @@ def _add_rule(method, name, app=None, interface=None, protocol=None,
     try:
         out = __salt__['ufw.add_rule'](rule)
     except (CommandExecutionError, CommandNotFoundError) as e:
+        if method.startswith('insert 1 deny') and "Invalid position '1'" in e.message:
+            # This is probably the first rule to be added, so try again without "insert 1"
+            return _add_rule('deny', name, app, interface, protocol, from_addr, from_port, to_addr, to_port, comment)
         return _error(name, e.message)
 
     adds = False
@@ -111,6 +114,10 @@ def _add_rule(method, name, app=None, interface=None, protocol=None,
         if __opts__['test']:
             return _test(name, "{0} would have been configured".format(name))
             break
+
+        if method.startswith('insert 1 deny') and "Invalid position '1'" in line:
+            # This is probably the first rule to be added, so try again without "insert 1"
+            return _add_rule('deny', name, app, interface, protocol, from_addr, from_port, to_addr, to_port, comment)
         return _error(name, line)
 
     if adds:
@@ -181,7 +188,7 @@ def default_outgoing(name, default):
 def deny(name, app=None, interface=None, protocol=None,
          from_addr=None, from_port=None, to_addr=None, to_port=None, comment=None):
 
-    return _add_rule('deny', name, app, interface, protocol, from_addr, from_port, to_addr, to_port, comment)
+    return _add_rule('insert 1 deny', name, app, interface, protocol, from_addr, from_port, to_addr, to_port, comment)
 
 
 def limit(name, app=None, interface=None, protocol=None,
