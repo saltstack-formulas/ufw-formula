@@ -100,6 +100,7 @@ def _add_rule(method, name, app=None, interface=None, protocol=None,
         return _error(name, e.message)
 
     adds = False
+    inserts = False
     updates = False
     for line in out.split('\n'):
         if re.match('^Skipping', line):
@@ -107,6 +108,9 @@ def _add_rule(method, name, app=None, interface=None, protocol=None,
             break
         if re.match('^Rule(s)? added', line):
             adds = True
+            break
+        if re.match('^Rule(s)? inserted', line):
+            inserts = True
             break
         if re.match('^Rule(s)? updated', line):
             updates = True
@@ -122,6 +126,8 @@ def _add_rule(method, name, app=None, interface=None, protocol=None,
 
     if adds:
         return _changed(name, "{0} added".format(name), rule=rule)
+    elif inserts:
+        return _changed(name, "{0} inserted".format(name), rule=rule)
     elif updates:
         return _changed(name, "{0} updated".format(name), rule=rule)
     else:
