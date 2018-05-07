@@ -43,15 +43,20 @@ ufw:
   # services
   {%- for service_name, service_details in ufw.get('services', {}).items() %}
 
-    {%- for from_addr in service_details.get('from_addr', [None]) %}
+    {%- set from_addr_raw = service_details.get('from_addr', [None]) -%}
+    {%- set from_addrs = [from_addr_raw] if from_addr_raw is string else from_addr_raw -%}
 
+    {%- for from_addr in from_addrs %}
       {%- set protocol  = service_details.get('protocol', None) %}
+      {%- set deny      = service_details.get('deny', None) %}
+      {%- set limit     = service_details.get('limit', None) %}
+      {%- set method    = 'deny' if deny else ('limit' if limit else 'allow') -%}
       {%- set from_port = service_details.get('from_port', None) %}
       {%- set to_addr   = service_details.get('to_addr', None) %}
       {%- set comment   = service_details.get('comment', None) %}
 
-ufw-svc-{{service_name}}-{{from_addr}}:
-  ufw.allowed:
+ufw-svc-{{method}}-{{service_name}}-{{from_addr}}:
+  ufw.{{method}}:
     {%- if protocol != None %}
     - protocol: {{protocol}}
     {%- endif %}
@@ -79,17 +84,23 @@ ufw-svc-{{service_name}}-{{from_addr}}:
 
   # Applications
   {%- for app_name, app_details in ufw.get('applications', {}).items() %}
-    
-    {%- for from_addr in app_details.get('from_addr', [None]) %}
+
+    {%- set from_addr_raw = app_details.get('from_addr', [None]) -%}
+    {%- set from_addrs = [from_addr_raw] if from_addr_raw is string else from_addr_raw -%}
+
+    {%- for from_addr in from_addrs %}
+      {%- set deny    = app_details.get('deny', None) %}
+      {%- set limit   = app_details.get('limit', None) %}
+      {%- set method  = 'deny' if deny else ('limit' if limit else 'allow') -%}
       {%- set to_addr = app_details.get('to_addr', None) %}
       {%- set comment = app_details.get('comment', None) %}
 
 {%- if from_addr != None%}
-ufw-app-{{app_name}}-{{from_addr}}:
+ufw-app-{{method}}-{{app_name}}-{{from_addr}}:
 {%- else %}
-ufw-app-{{app_name}}:
+ufw-app-{{method}}-{{app_name}}:
 {%- endif %}
-  ufw.allowed:
+  ufw.{{method}}:
     - app: '"{{app_name}}"'
     {%- if from_addr != None %}
     - from_addr: {{from_addr}}
@@ -107,7 +118,7 @@ ufw-app-{{app_name}}:
 
     {%- endfor %}
   {%- endfor %}
-  
+
   # Interfaces
   {%- for interface_name, interface_details in ufw.get('interfaces', {}).items() %}
     {%- set comment = interface_details.get('comment', None) %}

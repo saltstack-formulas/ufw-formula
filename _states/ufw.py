@@ -80,6 +80,60 @@ def _as_rule(method, app, interface, protocol, from_addr, from_port, to_addr, to
     return real_cmd
 
 
+def _add_rule(method, name, app=None, interface=None, protocol=None,
+              from_addr=None, from_port=None, to_addr=None, to_port=None, comment=None):
+
+    if app and app.strip('"\' ') == '*':
+        app = None
+    if to_port and to_port.strip('"\' ') == '*':
+        to_port = None
+
+    rule = _as_rule(method, app=app, interface=interface, protocol=protocol,
+                    from_addr=from_addr, from_port=from_port, to_addr=to_addr, to_port=to_port, comment=comment)
+
+    try:
+        out = __salt__['ufw.add_rule'](rule)
+    except (CommandExecutionError, CommandNotFoundError) as e:
+        if method.startswith('insert 1 deny') and "Invalid position '1'" in e.message:
+            # This is probably the first rule to be added, so try again without "insert 1"
+            return _add_rule('deny', name, app, interface, protocol, from_addr, from_port, to_addr, to_port, comment)
+        return _error(name, e.message)
+
+    adds = False
+    inserts = False
+    updates = False
+    for line in out.split('\n'):
+        if re.match('^Skipping', line):
+            return _unchanged(name, "{0} is already configured".format(name))
+            break
+        if re.match('^Rule(s)? added', line):
+            adds = True
+            break
+        if re.match('^Rule(s)? inserted', line):
+            inserts = True
+            break
+        if re.match('^Rule(s)? updated', line):
+            updates = True
+            break
+        if __opts__['test']:
+            return _test(name, "{0} would have been configured".format(name))
+            break
+
+        if method.startswith('insert 1 deny') and "Invalid position '1'" in line:
+            # This is probably the first rule to be added, so try again without "insert 1"
+            return _add_rule('deny', name, app, interface, protocol, from_addr, from_port, to_addr, to_port, comment)
+        return _error(name, line)
+
+    if adds:
+        return _changed(name, "{0} added".format(name), rule=rule)
+    elif inserts:
+        return _changed(name, "{0} inserted".format(name), rule=rule)
+    elif updates:
+        return _changed(name, "{0} updated".format(name), rule=rule)
+    else:
+        return _unchanged(name, "{0} was already configured".format(name))
+
+
 def enabled(name, **kwargs):
     if __salt__['ufw.is_enabled']():
         return _unchanged(name, "UFW is already enabled")
@@ -137,38 +191,28 @@ def default_outgoing(name, default):
     return _unchanged(name, "{0} was already set to {1}".format(name, default))
 
 
+def deny(name, app=None, interface=None, protocol=None,
+         from_addr=None, from_port=None, to_addr=None, to_port=None, comment=None):
+
+    return _add_rule('insert 1 deny', name, app, interface, protocol, from_addr, from_port, to_addr, to_port, comment)
+
+
+def limit(name, app=None, interface=None, protocol=None,
+          from_addr=None, from_port=None, to_addr=None, to_port=None, comment=None):
+
+    return _add_rule('limit', name, app, interface, protocol, from_addr, from_port, to_addr, to_port, comment)
+
+
+def allow(name, app=None, interface=None, protocol=None,
+          from_addr=None, from_port=None, to_addr=None, to_port=None, comment=None):
+
+    return _add_rule('allow', name, app, interface, protocol, from_addr, from_port, to_addr, to_port, comment)
+
+
 def allowed(name, app=None, interface=None, protocol=None,
             from_addr=None, from_port=None, to_addr=None, to_port=None, comment=None):
 
-    rule = _as_rule("allow", app=app, interface=interface, protocol=protocol,
-                   from_addr=from_addr, from_port=from_port, to_addr=to_addr, to_port=to_port, comment=comment)
-
-    try:
-        out = __salt__['ufw.add_rule'](rule)
-    except (CommandExecutionError, CommandNotFoundError) as e:
-        return _error(name, e.message)
-
-    adds = False
-    updates = False
-    for line in out.split('\n'):
-        if re.match('^Skipping', line):
-            return _unchanged(name, "{0} is already configured".format(name))
-            break
-        if re.match('^Rule(s)? added', line):
-            adds = True
-            break
-        if re.match('^Rule(s)? updated', line):
-            updates = True
-            break
-        if __opts__['test']:
-            return _test(name, "{0} would have been configured".format(name))
-            break
-        return _error(name, line)
-
-    if adds:
-        return _changed(name, "{0} added".format(name), rule=rule)
-    elif updates:
-        return _changed(name, "{0} updated".format(name), rule=rule)
-    else:
-        return _unchanged(name, "{0} was already configured".format(name))
-
+    """
+    allow() is aliased to allowed() to maintain backwards compatibility.
+    """
+    return allow(name, app, interface, protocol, from_addr, from_port, to_addr, to_port, comment)
