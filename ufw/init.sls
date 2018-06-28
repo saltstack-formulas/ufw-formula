@@ -53,6 +53,7 @@ ufw:
       {%- set method    = 'deny' if deny else ('limit' if limit else 'allow') -%}
       {%- set from_port = service_details.get('from_port', None) %}
       {%- set to_addr   = service_details.get('to_addr', None) %}
+      {%- set to_port   = service_details.get('to_port', service_name) %}
       {%- set comment   = service_details.get('comment', None) %}
 
 ufw-svc-{{method}}-{{service_name}}-{{from_addr}}:
@@ -72,7 +73,7 @@ ufw-svc-{{method}}-{{service_name}}-{{from_addr}}:
     {%- if comment != None %}
     - comment: '"{{comment}}"'
     {%- endif %}
-    - to_port: "{{service_name}}"
+    - to_port: "{{to_port}}"
     - require:
       - pkg: ufw
     - listen_in:
