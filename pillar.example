@@ -69,8 +69,10 @@ ufw:
       deny: True
       from_addr: 10.0.0.1
 
-    # Deny everything from a multiple ip addresses
-    '*':
+    # Deny everything from multiple ip addresses and avoid
+    # conflicts with already defined service '*'
+    '*/multiple':
+      to_port: '*'
       protocol: tcp
       deny: True
       from_addr:
