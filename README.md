@@ -62,6 +62,18 @@ ufw:
       protocol: udp
 ```
 
+Allow from a range of ports, tcp and udp
+```
+ufw:
+  services:
+    "10000:20000/tcp":
+      to_port: "10000:20000"
+      protocol: tcp
+    "10000:20000/udp":
+      to_port: "10000:20000"
+      protocol: udp
+```
+
 Allow from two specific ports, udp:
 ```
 ufw:
