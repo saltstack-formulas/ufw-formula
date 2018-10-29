@@ -80,8 +80,8 @@ platforms:
 
 verifier:
   name: inspec
-  reporter: progress
+  reporter:
+    - progress
 
 suites:
   - name: ufw
-
