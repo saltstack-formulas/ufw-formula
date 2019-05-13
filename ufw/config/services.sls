@@ -43,7 +43,9 @@ ufw-svc-{{method}}-{{service_name}}-{{from_addr}}:
     {%- if to_addr is not none %}
     - to_addr: {{to_addr}}
     {%- endif %}
-    {%- if comment is not none %}
+    # Debian Jessie doesn't implement the **comment** directive
+    # CentOS-6 throws an UTF-8 error
+    {%- if comment is not none and salt['grains.get']('osfinger') != 'Debian-8' and salt['grains.get']('osfinger') != 'CentOS-6' %}
     - comment: '"{{comment}}"'
     {%- endif %}
     - to_port: "{{to_port}}"

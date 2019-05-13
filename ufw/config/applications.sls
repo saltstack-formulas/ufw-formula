@@ -39,7 +39,9 @@ ufw-app-{{method}}-{{app_name}}:
     {%- if to_addr is not none %}
     - to_addr: {{to_addr}}
     {%- endif %}
-    {%- if comment is not none %}
+    # Debian Jessie doesn't implement the **comment** directive
+    # CentOS-6 throws an UTF-8 error
+    {%- if comment is not none and salt['grains.get']('osfinger') != 'Debian-8' and salt['grains.get']('osfinger') != 'CentOS-6' %}
     - comment: '"{{comment}}"'
     {%- endif %}
     - listen_in:
