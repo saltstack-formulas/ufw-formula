@@ -1,2 +1,17 @@
-ufwmap:
-  pkg: ufw
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+---
+ufw:
+  package: ufw
+  packages: []
+  service:
+    name: ufw
+  default_file: /etc/default/ufw
+  sysctl_file: /etc/ufw/sysctl.conf
+  enabled: false
+  settings: {}
+  sysctl: {}
+  services: {}
+  applications: {}
+  interfaces: {}
+  open: {}
