@@ -1,23 +1,23 @@
-{% set ufw_cfg = pillar.get('ufw', {}) -%}
-{% set sysctl_cfg = ufw_cfg.get('sysctl', {}) -%}
-{% set forwarding = sysctl_cfg.get('forwarding', 0) -%}
-{% set rp_filter = sysctl_cfg.get('rp_filter', 1) -%}
-{% set accept_source_route = sysctl_cfg.get('accept_source_route', 0) -%}
-{% set accept_redirects = sysctl_cfg.get('accept_redirects', 0) -%}
-{% set icmp_echo_ignore_broadcasts = sysctl_cfg.get('icmp_echo_ignore_broadcasts', 1) -%}
-{% set icmp_ignore_bogus_error_responses = sysctl_cfg.get('icmp_ignore_bogus_error_responses', 1) -%}
-{% set icmp_echo_ignore_all = sysctl_cfg.get('icmp_echo_ignore_all', 0) -%}
-{% set log_martians = sysctl_cfg.get('log_martians', 0) -%}
-{% set tcp_syncookies = sysctl_cfg.get('tcp_syncookies', 0) -%}
-{% set tcp_sack = sysctl_cfg.get('tcp_sack', 1) -%}
-{% set ipv6_autoconf = sysctl_cfg.get('ipv6_autoconf', 1) -%}
-{% set use_tempaddr = sysctl_cfg.get('use_tempaddr', 1) -%}
-# File managed by Salt. Do not edit manually.
-#
+########################################################################
+# File managed by Salt at <{{ source }}>.
+# Your changes will be overwritten.
+########################################################################
+{%- set forwarding = ufw_sysctl.get('forwarding', 0) %}
+{%- set rp_filter = ufw_sysctl.get('rp_filter', 1) %}
+{%- set accept_source_route = ufw_sysctl.get('accept_source_route', 0) %}
+{%- set accept_redirects = ufw_sysctl.get('accept_redirects', 0) %}
+{%- set icmp_echo_ignore_broadcasts = ufw_sysctl.get('icmp_echo_ignore_broadcasts', 1) %}
+{%- set icmp_ignore_bogus_error_responses = ufw_sysctl.get('icmp_ignore_bogus_error_responses', 1) %}
+{%- set icmp_echo_ignore_all = ufw_sysctl.get('icmp_echo_ignore_all', 0) %}
+{%- set log_martians = ufw_sysctl.get('log_martians', 0) %}
+{%- set tcp_syncookies = ufw_sysctl.get('tcp_syncookies', 0) %}
+{%- set tcp_sack = ufw_sysctl.get('tcp_sack', 1) %}
+{%- set ipv6_autoconf = ufw_sysctl.get('ipv6_autoconf', 1) %}
+{%- set use_tempaddr = ufw_sysctl.get('use_tempaddr', 1) %}
+
 # Configuration file for setting network variables. Please note these settings
 # override /etc/sysctl.conf. If you prefer to use /etc/sysctl.conf, please
 # adjust IPT_SYSCTL in /etc/default/ufw.
-#
 
 # Uncomment this to allow this host to route packets between interfaces
 net/ipv4/ip_forward={{ forwarding }}

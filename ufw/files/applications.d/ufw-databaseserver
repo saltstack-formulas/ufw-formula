@@ -12,7 +12,3 @@ ports=3306/tcp
 title=Postgresql database server
 description=Postgresql database server.
 ports=5432/tcp
-
-
-
-
