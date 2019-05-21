@@ -1,5 +1,17 @@
 # Changelog
 
+# [0.4.0](https://github.com/saltstack-formulas/ufw-formula/compare/v0.3.0...v0.4.0) (2019-05-21)
+
+
+### Continuous Integration
+
+* **kitchen+travis:** test with pre-salted Docker images ([f27ec2e](https://github.com/saltstack-formulas/ufw-formula/commit/f27ec2e))
+
+
+### Features
+
+* **tofs:** switch to tofs ([c05019a](https://github.com/saltstack-formulas/ufw-formula/commit/c05019a))
+
 # [0.3.0](https://github.com/saltstack-formulas/ufw-formula/compare/v0.2.0...v0.3.0) (2019-05-14)
 
 
