@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.1](https://github.com/saltstack-formulas/ufw-formula/compare/v0.4.0...v0.4.1) (2019-07-13)
+
+
+### Code Refactoring
+
+* **kitchen+inspec:** move inline pillar to file ([0005375](https://github.com/saltstack-formulas/ufw-formula/commit/0005375))
+
+
+### Continuous Integration
+
+* **kitchen+travis:** modify matrix to include `develop` platform ([8699e9d](https://github.com/saltstack-formulas/ufw-formula/commit/8699e9d))
+
 # [0.4.0](https://github.com/saltstack-formulas/ufw-formula/compare/v0.3.0...v0.4.0) (2019-05-21)
 
 
