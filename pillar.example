@@ -1,15 +1,18 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+---
 ufw:
 
-  enabled: True
+  enabled: true
 
   settings:
     loglevel: low
-    ipv6: True
+    ipv6: true
     default_input_policy: 'DROP'
     default_output_policy: 'ACCEPT'
     default_forward_policy: 'DROP'
     default_application_policy: 'SKIP'
-    manage_builtins: False
+    manage_builtins: false
     ipt_sysctl: '/etc/ufw/sysctl.conf'
     ipt_modules:
       - nf_conntrack_ftp
@@ -61,12 +64,12 @@ ufw:
     # Deny from a specific port, by number.
     140:
       protocol: tcp
-      deny: True
+      deny: true
 
     # Deny everything from a specific ip address
     '*':
       protocol: tcp
-      deny: True
+      deny: true
       from_addr: 10.0.0.1
 
     # Deny everything from multiple ip addresses and avoid
@@ -74,14 +77,14 @@ ufw:
     '*/multiple':
       to_port: '*'
       protocol: tcp
-      deny: True
+      deny: true
       from_addr:
         - 10.0.0.2
         - 10.0.0.3
 
     # Limit a specific port, by number.
     170:
-      limit: True
+      limit: true
       protocol: tcp
       comment: Print service
 
@@ -98,16 +101,16 @@ ufw:
   # Allow applications defined at /etc/ufw/applications.d/
   applications:
     OpenSSH:
-      enabled: True
+      enabled: true
       comment: We are using fail2ban anyway
 
     # Limit access to salt master
     Saltmaster:
-      limit: True
+      limit: true
 
     # Deny access to Postgresql
     Postgresql:
-      deny: True
+      deny: true
 
   # Allow all traffic in on the specified interface
   interfaces:

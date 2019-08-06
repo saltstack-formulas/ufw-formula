@@ -1,32 +1,35 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+---
 ufw:
-  enabled: True
+  enabled: true
   settings:
     loglevel: 'low'
   applications:
     MySQL:
       comment: Allow MySQL
     Postgresql:
-      limit: True
+      limit: true
       comment: Limit Postgresql
     SSH223:
-      deny: True
+      deny: true
       comment: Deny Webscale SSH
     '*':
-      deny: True
+      deny: true
       from_addr: 10.0.0.0/8
   services:
     '*':
-      deny: True
+      deny: true
       from_addr:
         - 10.0.0.1
         - 10.0.0.2
     '22':
       protocol: tcp
-      limit: True
+      limit: true
       comment: Limit SSH
     '80':
       protocol: tcp
-      deny: True
+      deny: true
       comment: Deny HTTP
     '443':
       protocol: tcp
