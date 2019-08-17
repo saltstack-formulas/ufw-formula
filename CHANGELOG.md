@@ -1,5 +1,12 @@
 # Changelog
 
+# [0.5.0](https://github.com/saltstack-formulas/ufw-formula/compare/v0.4.1...v0.5.0) (2019-08-17)
+
+
+### Features
+
+* **yamllint:** include for this repo and apply rules throughout ([38eb4dc](https://github.com/saltstack-formulas/ufw-formula/commit/38eb4dc))
+
 ## [0.4.1](https://github.com/saltstack-formulas/ufw-formula/compare/v0.4.0...v0.4.1) (2019-07-13)
 
 
