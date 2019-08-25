@@ -2,6 +2,15 @@
 Changelog
 =========
 
+`0.5.1 <https://github.com/saltstack-formulas/ufw-formula/compare/v0.5.0...v0.5.1>`_ (2019-08-25)
+-----------------------------------------------------------------------------------------------------
+
+Documentation
+^^^^^^^^^^^^^
+
+
+* **readme:** update testing section (\ `80a3734 <https://github.com/saltstack-formulas/ufw-formula/commit/80a3734>`_\ )
+
 `0.5.0 <https://github.com/saltstack-formulas/ufw-formula/compare/v0.4.1...v0.5.0>`_ (2019-08-17)
 -----------------------------------------------------------------------------------------------------
 
