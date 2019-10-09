@@ -17,11 +17,11 @@ include:
 {%- for interface_name, interface_details in ufw.get('interfaces', {}).items() %}
   {%- set comment = interface_details.get('comment', None) %}
 
-ufw-interface-{{interface_name}}:
+ufw-interface-{{ interface_name }}:
   ufw.allowed:
-    - interface: {{interface_name}}
+    - interface: {{ interface_name }}
     {%- if comment is not none %}
-    - comment: '"{{comment}}"'
+    - comment: '"{{ comment }}"'
     {%- endif %}
     - listen_in:
       - cmd: reload-ufw
