@@ -29,26 +29,26 @@ include:
     {%- set to_port   = service_details.get('to_port', service_name) %}
     {%- set comment   = service_details.get('comment', None) %}
 
-ufw-svc-{{method}}-{{service_name}}-{{from_addr}}:
-  ufw.{{method}}:
+ufw-svc-{{ method }}-{{ service_name }}-{{ from_addr }}:
+  ufw.{{ method }}:
     {%- if protocol is not none %}
-    - protocol: {{protocol}}
+    - protocol: {{ protocol }}
     {%- endif %}
     {%- if from_addr is not none %}
-    - from_addr: {{from_addr}}
+    - from_addr: {{ from_addr }}
     {%- endif %}
     {%- if from_port is not none %}
-    - from_port: "{{from_port}}"
+    - from_port: "{{ from_port }}"
     {%- endif %}
     {%- if to_addr is not none %}
-    - to_addr: {{to_addr}}
+    - to_addr: {{ to_addr }}
     {%- endif %}
     # Debian Jessie doesn't implement the **comment** directive
     # CentOS-6 throws an UTF-8 error
     {%- if comment is not none and salt['grains.get']('osfinger') != 'Debian-8' and salt['grains.get']('osfinger') != 'CentOS-6' %}
-    - comment: '"{{comment}}"'
+    - comment: '"{{ comment }}"'
     {%- endif %}
-    - to_port: "{{to_port}}"
+    - to_port: "{{ to_port }}"
     - listen_in:
       - cmd: reload-ufw
 

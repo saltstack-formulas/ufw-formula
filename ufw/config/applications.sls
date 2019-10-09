@@ -27,22 +27,22 @@ include:
     {%- set comment = app_details.get('comment', None) %}
 
 {%- if from_addr is not none %}
-ufw-app-{{method}}-{{app_name}}-{{from_addr}}:
+ufw-app-{{ method }}-{{ app_name }}-{{ from_addr }}:
 {%- else %}
-ufw-app-{{method}}-{{app_name}}:
+ufw-app-{{ method }}-{{ app_name }}:
 {%- endif %}
-  ufw.{{method}}:
-    - app: '"{{app_name}}"'
+  ufw.{{ method }}:
+    - app: '"{{ app_name }}"'
     {%- if from_addr is not none %}
-    - from_addr: {{from_addr}}
+    - from_addr: {{ from_addr }}
     {%- endif %}
     {%- if to_addr is not none %}
-    - to_addr: {{to_addr}}
+    - to_addr: {{ to_addr }}
     {%- endif %}
     # Debian Jessie doesn't implement the **comment** directive
     # CentOS-6 throws an UTF-8 error
     {%- if comment is not none and salt['grains.get']('osfinger') != 'Debian-8' and salt['grains.get']('osfinger') != 'CentOS-6' %}
-    - comment: '"{{comment}}"'
+    - comment: '"{{ comment }}"'
     {%- endif %}
     - listen_in:
       - cmd: reload-ufw

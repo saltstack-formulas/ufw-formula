@@ -17,11 +17,11 @@ include:
 {%- for open_addr, open_details in ufw.get('open', {}).items() %}
   {%- set comment = open_details.get('comment', None) %}
 
-ufw-open-{{open_addr}}:
+ufw-open-{{ open_addr }}:
   ufw.allowed:
-    - from_addr: {{open_addr}}
+    - from_addr: {{ open_addr }}
     {%- if comment is not none %}
-    - comment: '"{{comment}}"'
+    - comment: '"{{ comment }}"'
     {%- endif %}
     - listen_in:
       - cmd: reload-ufw
