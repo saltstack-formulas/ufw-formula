@@ -2,6 +2,22 @@
 Changelog
 =========
 
+`0.5.3 <https://github.com/saltstack-formulas/ufw-formula/compare/v0.5.2...v0.5.3>`_ (2019-10-19)
+-----------------------------------------------------------------------------------------------------
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* **travis:** remove ``PyYAML`` workaround since fixed in ``salt-lint`` v0.0.9 (\ ` <https://github.com/saltstack-formulas/ufw-formula/commit/698dad8>`_\ )
+
+Documentation
+^^^^^^^^^^^^^
+
+
+* **contributing:** remove to use org-level file instead [skip ci] (\ ` <https://github.com/saltstack-formulas/ufw-formula/commit/7dd4dc2>`_\ )
+* **readme:** update link to ``CONTRIBUTING`` [skip ci] (\ ` <https://github.com/saltstack-formulas/ufw-formula/commit/374f48a>`_\ )
+
 `0.5.2 <https://github.com/saltstack-formulas/ufw-formula/compare/v0.5.1...v0.5.2>`_ (2019-10-10)
 -----------------------------------------------------------------------------------------------------
 
