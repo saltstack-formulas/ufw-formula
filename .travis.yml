@@ -35,9 +35,10 @@ jobs:
       before_install: skip
       script:
         # Need to use `pip3` due to using `trusty` on Travis
+        # [Py2/InsecurePlatformWarning] Tornado requires an up-to-date SSL module.
         - sudo apt-get install python3-pip python3-setuptools python3-wheel -y
         # Install and run `salt-lint`
-        - pip3 install --user salt-lint PyYAML==4.2b4
+        - pip3 install --user salt-lint
         - git ls-files | grep '\.sls$\|\.jinja$\|\.j2$\|\.tmpl$'
                        | xargs -I {} salt-lint {}
         # Install and run `yamllint`
