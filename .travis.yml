@@ -35,7 +35,7 @@ jobs:
     - language: 'node_js'
       node_js: 'lts/*'
       env: 'Lint'
-      name: 'Lint: salt-lint, yamllint & commitlint'
+      name: 'Lint: salt-lint, yamllint, shellcheck & commitlint'
       before_install: 'skip'
       script:
         # Need to use `pip3` due to using `trusty` on Travis
@@ -43,12 +43,16 @@ jobs:
         - sudo apt-get install python3-pip python3-setuptools python3-wheel -y
         # Install and run `salt-lint`
         - pip3 install --user salt-lint
-        - git ls-files | grep '\.sls$\|\.jinja$\|\.j2$\|\.tmpl$\|\.tst$'
-                       | xargs salt-lint
+        - git ls-files -- *.sls *.jinja *.j2 *.tmpl *.tst
+                        | xargs salt-lint
         # Install and run `yamllint`
         # Need at least `v1.17.0` for the `yaml-files` setting
         - pip3 install --user yamllint>=1.17.0
         - yamllint -s .
+        # Run `shellcheck` (already pre-installed in Travis)
+        - shellcheck --version
+        - git ls-files -- *.sh *.bash *.ksh
+                        | xargs shellcheck
         # Install and run `commitlint`
         - npm i -D @commitlint/config-conventional
                    @commitlint/travis-cli
