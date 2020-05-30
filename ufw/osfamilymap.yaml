@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 # vim: ft=yaml
 ---
-Debian:
-  packages:
-    - python-ufw
+Debian: {}
 RedHat: {}
 Suse:
   packages:
