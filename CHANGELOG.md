@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.5.5](https://github.com/saltstack-formulas/ufw-formula/compare/v0.5.4...v0.5.5) (2020-07-20)
+
+
+### Bug Fixes
+
+* **service:** don't reload ufw service if service is disabled ([c953630](https://github.com/saltstack-formulas/ufw-formula/commit/c953630e5f53f15d873981325a5f9b52f5f812e0))
+
+
+### Continuous Integration
+
+* **kitchen:** use `saltimages` Docker Hub where available [skip ci] ([ffeed19](https://github.com/saltstack-formulas/ufw-formula/commit/ffeed19c39447ba825fcc8d42ed70f673ae3a098))
+
+
+### Styles
+
+* **libtofs.jinja:** use Black-inspired Jinja formatting [skip ci] ([830b8fe](https://github.com/saltstack-formulas/ufw-formula/commit/830b8fe0591bb51332920c8a39ed5ba1dd27a10c))
+
 ## [0.5.4](https://github.com/saltstack-formulas/ufw-formula/compare/v0.5.3...v0.5.4) (2020-05-30)
 
 
