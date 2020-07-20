@@ -8,6 +8,8 @@
 {%- set sls_reload_service  = tplroot ~ '.service.reload' %}
 {%- from tplroot ~ "/map.jinja" import ufw with context %}
 
+{%- set enabled = ufw.get('enabled', False) %}
+
 include:
   - {{ sls_package_install }}
   - {{ sls_enable_service }}
@@ -44,8 +46,9 @@ ufw-app-{{ method }}-{{ app_name }}:
     {%- if comment is not none and salt['grains.get']('osfinger') != 'Debian-8' and salt['grains.get']('osfinger') != 'CentOS-6' %}
     - comment: '"{{ comment }}"'
     {%- endif %}
+    {%- if enabled %}
     - listen_in:
       - cmd: reload-ufw
-
+    {%- endif %}
   {%- endfor %}
 {%- endfor %}
