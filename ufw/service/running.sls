@@ -15,7 +15,7 @@ ufw-service-running-service-running:
   service.running:
     - name: {{ ufw.service.name }}
     - enable: true
-    - require:
+    - watch:
       - sls: {{ sls_config_file }}
 
 {%- else %}
@@ -24,7 +24,7 @@ ufw-service-dead-service-dead:
   service.dead:
     - name: {{ ufw.service.name }}
     - enable: false
-    - require:
+    - watch:
       - sls: {{ sls_config_file }}
 
 {%- endif %}
