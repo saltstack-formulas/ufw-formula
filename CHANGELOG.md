@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.6](https://github.com/saltstack-formulas/ufw-formula/compare/v0.5.5...v0.5.6) (2020-09-10)
+
+
+### Bug Fixes
+
+* **state:** restart service when configuration has changed ([6de4e9a](https://github.com/saltstack-formulas/ufw-formula/commit/6de4e9ab7b015ae75ed21218adb9b8b2ba3986bb))
+
 ## [0.5.5](https://github.com/saltstack-formulas/ufw-formula/compare/v0.5.4...v0.5.5) (2020-07-20)
 
 
