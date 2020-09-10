@@ -2,6 +2,15 @@
 Changelog
 =========
 
+`0.5.7 <https://github.com/saltstack-formulas/ufw-formula/compare/v0.5.6...v0.5.7>`_ (2020-09-10)
+-----------------------------------------------------------------------------------------------------
+
+Styles
+^^^^^^
+
+
+* **rubocop:** fix Rubocop offenses (\ `86126c0 <https://github.com/saltstack-formulas/ufw-formula/commit/86126c02f602006c19171f2282cbf1c26b0e2f08>`_\ )
+
 `0.5.6 <https://github.com/saltstack-formulas/ufw-formula/compare/v0.5.5...v0.5.6>`_ (2020-09-10)
 -----------------------------------------------------------------------------------------------------
 
