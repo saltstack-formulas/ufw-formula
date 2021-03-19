@@ -192,9 +192,12 @@ def default_outgoing(name, default):
 
 
 def deny(name, app=None, interface=None, protocol=None,
-         from_addr=None, from_port=None, to_addr=None, to_port=None, comment=None):
+         from_addr=None, from_port=None, to_addr=None, to_port=None, comment=None, force_first=True):
 
-    return _add_rule('insert 1 deny', name, app, interface, protocol, from_addr, from_port, to_addr, to_port, comment)
+    if force_first is False:
+        return _add_rule('deny', name, app, interface, protocol, from_addr, from_port, to_addr, to_port, comment)
+    else:
+        return _add_rule('insert 1 deny', name, app, interface, protocol, from_addr, from_port, to_addr, to_port, comment)
 
 
 def limit(name, app=None, interface=None, protocol=None,

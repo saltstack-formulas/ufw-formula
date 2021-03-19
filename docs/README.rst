@@ -151,6 +151,25 @@ Allow an application defined at /etc/ufw/applications.d/:
      applications:
        - OpenSSH
 
+Allow generic traffic on ens7, and allow 1 ip to access port 22 and explicitly block all others:
+
+.. code-block::
+
+   ufw:
+     interfaces:
+       ens7:
+     services:
+       22:
+         protocol: tcp
+         to_port: 22
+         from_addr:
+           - 192.168.1.1
+       22/deny:
+         protocol: tcp
+         to_port: 22
+         deny: true
+         force_first: false
+
 Testing
 -------
 

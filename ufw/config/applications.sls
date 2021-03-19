@@ -22,11 +22,12 @@ include:
   {%- set from_addrs = [from_addr_raw] if from_addr_raw is string else from_addr_raw %}
 
   {%- for from_addr in from_addrs %}
-    {%- set deny    = app_details.get('deny', None) %}
-    {%- set limit   = app_details.get('limit', None) %}
-    {%- set method  = 'deny' if deny else ('limit' if limit else 'allow') %}
-    {%- set to_addr = app_details.get('to_addr', None) %}
-    {%- set comment = app_details.get('comment', None) %}
+    {%- set deny        = app_details.get('deny', None) %}
+    {%- set force_first = app_details.get('force_first', None) %}
+    {%- set limit       = app_details.get('limit', None) %}
+    {%- set method      = 'deny' if deny else ('limit' if limit else 'allow') %}
+    {%- set to_addr     = app_details.get('to_addr', None) %}
+    {%- set comment     = app_details.get('comment', None) %}
 
 {%- if from_addr is not none %}
 ufw-app-{{ method }}-{{ app_name }}-{{ from_addr }}:
@@ -35,6 +36,9 @@ ufw-app-{{ method }}-{{ app_name }}:
 {%- endif %}
   ufw.{{ method }}:
     - app: '"{{ app_name }}"'
+    {%- if force_first is not none %}
+    - force_first: {{ force_first }}
+    {%- endif %}
     {%- if from_addr is not none %}
     - from_addr: {{ from_addr }}
     {%- endif %}

@@ -22,19 +22,23 @@ include:
   {%- set from_addrs = [from_addr_raw] if from_addr_raw is string else from_addr_raw %}
 
   {%- for from_addr in from_addrs %}
-    {%- set protocol  = service_details.get('protocol', None) %}
-    {%- set deny      = service_details.get('deny', None) %}
-    {%- set limit     = service_details.get('limit', None) %}
-    {%- set method    = 'deny' if deny else ('limit' if limit else 'allow') %}
-    {%- set from_port = service_details.get('from_port', None) %}
-    {%- set to_addr   = service_details.get('to_addr', None) %}
-    {%- set to_port   = service_details.get('to_port', service_name) %}
-    {%- set comment   = service_details.get('comment', None) %}
+    {%- set protocol    = service_details.get('protocol', None) %}
+    {%- set deny        = service_details.get('deny', None) %}
+    {%- set force_first = service_details.get('force_first', None) %}
+    {%- set limit       = service_details.get('limit', None) %}
+    {%- set method      = 'deny' if deny else ('limit' if limit else 'allow') %}
+    {%- set from_port   = service_details.get('from_port', None) %}
+    {%- set to_addr     = service_details.get('to_addr', None) %}
+    {%- set to_port     = service_details.get('to_port', service_name) %}
+    {%- set comment     = service_details.get('comment', None) %}
 
 ufw-svc-{{ method }}-{{ service_name }}-{{ from_addr }}:
   ufw.{{ method }}:
     {%- if protocol is not none %}
     - protocol: {{ protocol }}
+    {%- endif %}
+    {%- if force_first is not none %}
+    - force_first: {{ force_first }}
     {%- endif %}
     {%- if from_addr is not none %}
     - from_addr: {{ from_addr }}

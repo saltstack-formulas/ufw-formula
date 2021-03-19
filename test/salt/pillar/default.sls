@@ -34,3 +34,8 @@ ufw:
     '443':
       protocol: tcp
       comment: Allow HTTPS
+    '1000':
+      protocol: tcp
+      deny: true
+      force_first: false
+      comment: Deny 1000 not as first
