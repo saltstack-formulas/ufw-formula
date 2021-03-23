@@ -328,6 +328,7 @@ suites:
       state_top:
         base:
           '*':
+            - ufw._mapdata
             - ufw
       pillars:
         top.sls:
@@ -344,6 +345,7 @@ suites:
       state_top:
         base:
           '*':
+            - ufw._mapdata
             - ufw
       pillars:
         top.sls:
