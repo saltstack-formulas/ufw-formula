@@ -61,10 +61,12 @@ ufw:
       protocol: tcp
       comment: Netbios
 
-    # Deny from a specific port, by number.
+    # Deny from a specific port, by number, but don't force
+    # the rule as the first rule in the ufw state
     140:
       protocol: tcp
       deny: true
+      force_first: false
 
     # Deny everything from a specific ip address
     '*':
