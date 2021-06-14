@@ -20,8 +20,12 @@ def _changed(name, msg, **changes):
 
 
 def _resolve(host):
-    # let's just see if it starts with a number or a colon, for simplicity
-    if re.match(r'^[0-9:]', host):
+    # pure IP address / netmask IPv4?
+    if re.match(r'^([0-9\.])+(/[0-9]+)?$', host):
+        return host
+
+    # pure IPv6 address / netmask?
+    if re.match(r'^([0-9a-f:]+)(/[0-9]+)?$', host):
         return host
 
     return socket.gethostbyname(host)
